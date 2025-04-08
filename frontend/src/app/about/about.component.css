@@ -1,0 +1,11 @@
+.shadow-text {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff4e50;
+  text-shadow: 2px 2px 4px rgba(255, 69, 0, 0.7), 0px 0px 25px rgba(255, 69, 0, 0.6);
+  transition: text-shadow 0.3s ease-in-out;
+}
+
+.shadow-text:hover {
+  text-shadow: 5px 5px 15px rgba(0, 255, 255, 0.8), 0px 0px 25px rgba(0, 255, 255, 0.6);
+}

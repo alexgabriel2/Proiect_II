@@ -1,0 +1,17 @@
+.car-item{
+  display: inline-block;
+  text-align:center;
+  width:220px;
+  margin:15px;
+}
+.car-item img{
+  width:200px;
+  height:200px;
+  object-fit:cover;
+  border-radius:10px;
+  display:block;
+  margin:0 auto;
+}
+.car-list{
+  text-align:center;
+}

@@ -1,0 +1,22 @@
+/* Fundal animat cu mai multe culori */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(45deg, #ff6347, #ff4500, #ff8c00, #ffd700, #32cd32, #4169e1);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+/* Animație pentru fundal */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
