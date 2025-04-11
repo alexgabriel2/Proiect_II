@@ -4,8 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-cars',
   imports: [],
   templateUrl: './cars.component.html',
+  standalone: true,
   styleUrl: './cars.component.css'
 })
-export class carsComponent {
+export class CarsComponent {
 
 }
