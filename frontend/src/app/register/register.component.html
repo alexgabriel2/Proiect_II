@@ -1,0 +1,31 @@
+<nav class="navbar">
+  <div class="navbar-brand">TurboCars.ro</div>
+  <ul class="navbar-links">
+    <li><a href="/cars">Cars</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+
+<div class="auth-form">
+  <h1>TurboCars.ro</h1>
+
+
+  <form [formGroup]="registerForm" (ngSubmit)="onsubmit()">
+    <!-- Register fields (only shown in register mode) -->
+
+      <input type="text" formControlName="firstName" name="firstName" placeholder="First Name" required>
+      <input type="text" formControlName="lastName" name="lastName" placeholder="Last Name" required>
+    <!-- Common fields (always shown) -->
+    <input type="email" formControlName="email" name="email" placeholder="Email" required>
+    <input type="password" formControlName="password" name="password" placeholder="Password" required>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <div class="switch-mode">
+    <p>Already have an account?</p>
+    <a href="/login">Login</a>
+  </div>
+</div>
+
+

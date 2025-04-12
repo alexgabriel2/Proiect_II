@@ -210,3 +210,5 @@ C:\Users\GreenLine\Desktop\facultate\II\Proiect_II\backend\bin\Debug\net8.0\runt
 C:\Users\GreenLine\Desktop\facultate\II\Proiect_II\backend\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\GreenLine\Desktop\facultate\II\Proiect_II\backend\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\GreenLine\Desktop\facultate\II\Proiect_II\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\GreenLine\Desktop\facultate\II\Proiect_II\backend\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\GreenLine\Desktop\facultate\II\Proiect_II\backend\bin\Debug\net8.0\Moq.dll

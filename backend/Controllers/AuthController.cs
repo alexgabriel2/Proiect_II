@@ -29,7 +29,7 @@ namespace backend.Controllers {
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<TokenResponseDto>> Login(UserDto request) {
+        public async Task<ActionResult<TokenResponseDto>> Login(LoginDto request) {
             var response = await authService.LoginAsync(request);
             if (response == null) {
                 return BadRequest("Invalid credentials");

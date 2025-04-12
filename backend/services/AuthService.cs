@@ -12,7 +12,7 @@ using System.Text;
 namespace backend.services {
     public class AuthService(AppDbContext context, IConfiguration configuration) : IAuthService {
 
-        public async Task<TokenResponseDto?> LoginAsync(UserDto request) {
+        public async Task<TokenResponseDto?> LoginAsync(LoginDto request) {
             var user = await context.Users.FirstOrDefaultAsync(x => x.Username == request.Username);
             if (user == null) {
                 return null;
@@ -42,6 +42,10 @@ namespace backend.services {
             var hashedPassword = new PasswordHasher<User>()
                  .HashPassword(user, request.Password);
             user.Username = request.Username;
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.Email = request.Email;
+
             user.PasswordHash = hashedPassword;
 
             context.Users.Add(user);
@@ -71,6 +75,9 @@ namespace backend.services {
             var Claims = new List<Claim> {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
                 new Claim(ClaimTypes.Role, user.Role)
             };
             var key = new SymmetricSecurityKey(
