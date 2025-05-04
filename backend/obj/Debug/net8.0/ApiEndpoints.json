@@ -98,7 +98,7 @@
     ]
   },
   {
-    "ContainingType": "backend.Controllers.Cars",
+    "ContainingType": "backend.Controllers.CarsController",
     "Method": "GetCars",
     "RelativePath": "api/Cars",
     "HttpMethod": "GET",
@@ -118,7 +118,7 @@
     ]
   },
   {
-    "ContainingType": "backend.Controllers.Cars",
+    "ContainingType": "backend.Controllers.CarsController",
     "Method": "CreateCar",
     "RelativePath": "api/Cars",
     "HttpMethod": "POST",
@@ -133,7 +133,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.Car",
+        "Type": "System.Collections.Generic.List\u00601[[backend.Entities.Car, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

@@ -1,38 +1,29 @@
-﻿using backend.Entities;
+﻿using backend.Data;
+using backend.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Cars : ControllerBase
+    public class CarsController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult <List<Car>> GetCars()
+        private readonly AppDbContext _context;
+
+        public CarsController(AppDbContext context)
         {
-            var cars = new List<Car>
-            {
-                new Car
-                {
-                    Id = Guid.NewGuid(),
-                    SellerId = Guid.NewGuid(),
-                    Make = "Toyota",
-                    Model = "Corolla",
-                    Year = 2020,
-                    Milleage = 15000,
-                    Price = 20000,
-                    FuelType = "Petrol",
-                    Transmission = "Automatic",
-                    Description = "A reliable car with great fuel efficiency.",
-                    Status = "Available",
-                    CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd")
-                }
-            };
+            _context = context;
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<Car>>> GetCars()
+        {
+            var cars = await _context.Cars.ToListAsync();
             return Ok(cars);
         }
         [HttpPost]
-        public ActionResult<Car> CreateCar([FromBody] Car car)
+        public async Task<ActionResult<List<Car>>> CreateCar([FromBody] Car car)
         {
             if (car == null)
             {
@@ -40,7 +31,8 @@ namespace backend.Controllers
             }
             car.Id = Guid.NewGuid();
             car.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
-            // Save the car to the database (not implemented here)
+            _context.Cars.Add(car);                 
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetCars), new { id = car.Id }, car);
         }
     }
