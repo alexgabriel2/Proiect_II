@@ -31,5 +31,17 @@ namespace backend.Controllers
             };
             return Ok(cars);
         }
+        [HttpPost]
+        public ActionResult<Car> CreateCar([FromBody] Car car)
+        {
+            if (car == null)
+            {
+                return BadRequest("Car cannot be null");
+            }
+            car.Id = Guid.NewGuid();
+            car.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
+            // Save the car to the database (not implemented here)
+            return CreatedAtAction(nameof(GetCars), new { id = car.Id }, car);
+        }
     }
 }
