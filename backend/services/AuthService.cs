@@ -1,4 +1,5 @@
-﻿using backend.Data;
+﻿using Azure.Core;
+using backend.Data;
 using backend.Entities;
 using backend.Models;
 using Microsoft.AspNetCore.Identity;
@@ -34,10 +35,9 @@ namespace backend.services {
             };
         }
 
-        public async Task<User?> RegisterAsync(UserDto request) {
-            if (await context.Users.AnyAsync(x => x.Username == request.Username)) {
-                return null;
-            }
+        public async Task<TokenResponseDto?> RegisterAsync(RegisterDto request) {
+
+            
             var user = new User();
             var hashedPassword = new PasswordHasher<User>()
                  .HashPassword(user, request.Password);
@@ -51,7 +51,7 @@ namespace backend.services {
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            return user;
+            return await CreateTokenResponse(user);
         }
 
         private string GenerateRefreshToken() {
@@ -90,7 +90,7 @@ namespace backend.services {
                    issuer: configuration.GetValue<string>("AppSettings:Issuer"),
                    audience: configuration.GetValue<string>("AppSettings:Audience"),
                    claims: Claims,
-                   expires: DateTime.Now.AddMonths(1),
+                   expires: DateTime.Now.AddMinutes(15),
                    signingCredentials: creds
                );
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
@@ -109,6 +109,43 @@ namespace backend.services {
                 return null;
             }
             return await CreateTokenResponse(user);
+        }
+        public async Task<List<string>> checkExisting(RegisterDto user) {
+            var errors = new List<string>();
+            if (await context.Users.AnyAsync(x => x.Username == user.Username)) {
+                errors.Add("Username already exists.");
+            }
+            if (await context.Users.AnyAsync(x => x.Email == user.Email)) {
+                errors.Add("Email already exists.");
+            }
+            return errors;
+        }
+
+        public async Task<UserDTO?> GetUserByIdAsync(string userId) {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Id.ToString() == userId);
+            if (user == null) {
+                return null;
+            }
+            return new UserDTO() {
+                Id = user.Id.ToString(),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
+                Email = user.Email
+            };
+        }
+
+        public async Task UpdateUserAsync(UserDTO user, string userId) {
+            var existingUser = await context.Users.FirstOrDefaultAsync(x => x.Id.ToString() == userId);
+            if (existingUser == null) {
+                throw new Exception("User not found");
+            }
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.Email = user.Email;
+            context.Users.Update(existingUser);
+            await context.SaveChangesAsync();
+
         }
     }
 }

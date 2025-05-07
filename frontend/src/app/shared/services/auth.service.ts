@@ -10,4 +10,13 @@ export class AuthService {
   register(user:any){
     return this.http.post(this.baseURL+'/Auth/Register',user);
   }
+  login(user:any){
+    return this.http.post(this.baseURL+'/Auth/Login',user);
+  }
+  getToken() {
+    return localStorage.getItem("token");
+  }
+  isLoggedIn() {
+    return this.http.get(this.baseURL+'/Auth/Validate');
+  }
 }
