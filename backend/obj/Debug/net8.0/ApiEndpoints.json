@@ -1,26 +1,6 @@
 [
   {
     "ContainingType": "backend.Controllers.AuthController",
-    "Method": "AdminOnlyEndpoint",
-    "RelativePath": "api/Auth",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend.Controllers.AuthController",
-    "Method": "AuthenticationOnlyEndpoint",
-    "RelativePath": "api/Auth/AuthenticationOnlyEndpoint",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/Auth/Login",
     "HttpMethod": "POST",
@@ -81,13 +61,13 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "backend.Models.UserDto",
+        "Type": "backend.Models.RegisterDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.User",
+        "Type": "backend.Models.TokenResponseDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -96,5 +76,61 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "backend.Controllers.UserController",
+    "Method": "GetInfo",
+    "RelativePath": "api/User/GetInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Models.UserDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.UserController",
+    "Method": "UpdateInfo",
+    "RelativePath": "api/User/UpdateInfo",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "backend.Models.UserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Models.UserDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.UserController",
+    "Method": "AuthenticationOnlyEndpoint",
+    "RelativePath": "api/User/Validate",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]
