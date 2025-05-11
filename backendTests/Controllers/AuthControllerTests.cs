@@ -10,6 +10,8 @@ using backend.services;
 using backend.Models;
 using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace backend.Controllers.Tests
 {
@@ -807,6 +809,113 @@ namespace backend.Controllers.Tests
             Assert.AreEqual(500, objectResult.StatusCode);
             Assert.AreEqual("Unexpected error", objectResult.Value);
         }
+
+        // ---------------- PASSWORD CHANGE TESTS ----------------
+
+        [TestMethod]
+        public async Task ChangePassword_ValidData_ReturnsOk()
+        {
+            //Schimbare parola cu succes
+            // Arrange
+            var mockAuthService = new Mock<IAuthService>();
+            var changePasswordDto = new ChangePasswordDto
+            {
+                OldPassword = "OldPassword1!",
+                NewPassword = "NewPassword1!"
+            };
+
+            mockAuthService
+                .Setup(service => service.ChangePasswordAsync(changePasswordDto, "testuser"))
+                .ReturnsAsync(true);
+
+            var controller = new AuthController(mockAuthService.Object);
+
+            // Simulăm un utilizator autentificat cu username = "testuser"
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            // Act
+            var result = await controller.ChangePassword(changePasswordDto);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            var okResult = result as OkObjectResult;
+            Assert.AreEqual("Password changed successfully.", okResult.Value);
+        }
+
+        [TestMethod]
+        public async Task ChangePassword_InvalidDto_ReturnsBadRequest()
+        {
+            // Parola identica sau prea scurta
+            // Arrange
+            var mockAuthService = new Mock<IAuthService>();
+            var changePasswordDto = new ChangePasswordDto
+            {
+                OldPassword = "pass",
+                NewPassword = "pass" // prea scurtă, identică
+            };
+
+            var controller = new AuthController(mockAuthService.Object);
+
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            // Act
+            var result = await controller.ChangePassword(changePasswordDto);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            var badRequest = result as BadRequestObjectResult;
+            Assert.IsInstanceOfType(badRequest.Value, typeof(List<string>));
+            var errors = badRequest.Value as List<string>;
+            Assert.IsTrue(errors.Count > 0);
+        }
+
+        [TestMethod]
+        public async Task ChangePassword_ChangeFails_ReturnsBadRequest()
+        {
+            //Parola gresita
+            // Arrange
+            var mockAuthService = new Mock<IAuthService>();
+            var changePasswordDto = new ChangePasswordDto
+            {
+                OldPassword = "WrongOldPassword!",
+                NewPassword = "NewPassword1!"
+            };
+
+            mockAuthService
+                .Setup(service => service.ChangePasswordAsync(changePasswordDto, "testuser"))
+                .ReturnsAsync(false); // Simulăm eșec la schimbare
+
+            var controller = new AuthController(mockAuthService.Object);
+
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            // Act
+            var result = await controller.ChangePassword(changePasswordDto);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            var badRequest = result as BadRequestObjectResult;
+            Assert.AreEqual("Password could not be changed.", badRequest.Value);
+        }
+
 
     }
 }

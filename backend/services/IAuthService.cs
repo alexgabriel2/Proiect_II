@@ -9,5 +9,6 @@ namespace backend.services {
         Task<List<string>> checkExisting(RegisterDto user);
         Task<UserDTO?> GetUserByIdAsync(string userId);
         Task UpdateUserAsync(UserDTO user,string userID);
+        Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username);
     }
 }
