@@ -92,3 +92,21 @@ button[type="submit"] {
   font-size: 14px;
   margin-top: 5px;
 }
+
+
+/* Opțional: Stilizează doar mesajele de sub inputuri */
+input ~ div,
+input ~ p {
+  color:  #ff6b6b !important;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: bold;
+}
+/* Stil pentru câmpurile care au erori */
+input.ng-invalid.ng-touched,
+input.is-invalid {
+  border: 1px solid #ff6b6b !important;  /* Linie subțire roșu deschis */
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2) !important;  /* Umbră subtle */
+  outline: none;  /* Dezactivează outline-ul implicit al browserului */
+}
+
