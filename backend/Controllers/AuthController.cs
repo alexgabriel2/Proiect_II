@@ -48,33 +48,5 @@ namespace backend.Controllers {
             }
             return Ok(result);
         }
-
-        [HttpPut("ChangePassword")]
-        public async Task<ActionResult> ChangePassword( ChangePasswordDto changePassword)
-        {
-            var errorsValidation = changePassword.checkValidation();
-            if (errorsValidation.Count > 0) { 
-                return BadRequest(errorsValidation); 
-            }
-            var username = User.FindFirstValue(ClaimTypes.Name);
-            if (string.IsNullOrEmpty(username))
-            {
-                return Unauthorized("Invalid token.");
-            }
-            try
-            {
-                var result = await authService.ChangePasswordAsync(changePassword, username);
-                if (!result)
-                {
-                    return BadRequest("Password could not be changed.");
-                }
-                return Ok("Password changed successfully.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-      
     }
 }

@@ -815,7 +815,7 @@ namespace backend.Controllers.Tests
         [TestMethod]
         public async Task ChangePassword_ValidData_ReturnsOk()
         {
-            //Schimbare parola cu succes
+            // Schimbare parola cu succes
             // Arrange
             var mockAuthService = new Mock<IAuthService>();
             var changePasswordDto = new ChangePasswordDto
@@ -828,9 +828,8 @@ namespace backend.Controllers.Tests
                 .Setup(service => service.ChangePasswordAsync(changePasswordDto, "testuser"))
                 .ReturnsAsync(true);
 
-            var controller = new AuthController(mockAuthService.Object);
+            var controller = new UserController(mockAuthService.Object);
 
-            // Simulăm un utilizator autentificat cu username = "testuser"
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
             var identity = new ClaimsIdentity(claims, "TestAuth");
             var claimsPrincipal = new ClaimsPrincipal(identity);
@@ -857,10 +856,10 @@ namespace backend.Controllers.Tests
             var changePasswordDto = new ChangePasswordDto
             {
                 OldPassword = "pass",
-                NewPassword = "pass" // prea scurtă, identică
+                NewPassword = "pass"
             };
 
-            var controller = new AuthController(mockAuthService.Object);
+            var controller = new UserController(mockAuthService.Object);
 
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
             var identity = new ClaimsIdentity(claims, "TestAuth");
@@ -884,7 +883,7 @@ namespace backend.Controllers.Tests
         [TestMethod]
         public async Task ChangePassword_ChangeFails_ReturnsBadRequest()
         {
-            //Parola gresita
+            // Parola greșită sau altă eroare
             // Arrange
             var mockAuthService = new Mock<IAuthService>();
             var changePasswordDto = new ChangePasswordDto
@@ -895,9 +894,9 @@ namespace backend.Controllers.Tests
 
             mockAuthService
                 .Setup(service => service.ChangePasswordAsync(changePasswordDto, "testuser"))
-                .ReturnsAsync(false); // Simulăm eșec la schimbare
+                .ReturnsAsync(false);
 
-            var controller = new AuthController(mockAuthService.Object);
+            var controller = new UserController(mockAuthService.Object);
 
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
             var identity = new ClaimsIdentity(claims, "TestAuth");
