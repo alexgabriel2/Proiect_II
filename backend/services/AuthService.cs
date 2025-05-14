@@ -147,5 +147,41 @@ namespace backend.services {
             await context.SaveChangesAsync();
 
         }
+
+        public async Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Username == username);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            var passwordVerficationResult = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, changePassword.OldPassword);
+            if (passwordVerficationResult == PasswordVerificationResult.Failed)
+            {
+                throw new Exception("Old password is incorrect.");
+            }
+            if (!IsValidPassword(changePassword.NewPassword))
+            {
+                throw new Exception("New password does not meet the required criteria.");
+            }
+            var hashedPassword = new PasswordHasher<User>().HashPassword(user, changePassword.NewPassword);
+            user.PasswordHash = hashedPassword;
+
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        private bool IsValidPassword(string password)
+        {
+            HashSet<char> specialChars = new HashSet<char> { '!', '@', '#', '$', '%', '^', '&', '*' };
+            return !string.IsNullOrEmpty(password)
+                && password.Length >= 8
+                && password.Any(char.IsUpper)
+                && password.Any(char.IsLower)
+                && password.Any(char.IsDigit)
+                && password.Any(specialChars.Contains);
+        }
     }
 }
