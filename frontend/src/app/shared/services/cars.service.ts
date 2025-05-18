@@ -14,7 +14,7 @@ export class CarService {
   getAllCars(): Observable<CarDto[]> {
     return this.http.get<CarDto[]>(`${this.baseURL}/Cars`);
   }
-  getCarImage(carId: string): Observable<string> {
-    return this.http.get<string>(`${this.baseURL}/Cars/${carId}/Image`);
+  getCarImage(carId: string): Observable<Blob> {
+    return this.http.get(`${this.baseURL}/Cars/${carId}/Image`, { responseType: 'blob' });
   }
 }
