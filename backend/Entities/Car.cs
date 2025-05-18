@@ -1,5 +1,7 @@
-﻿namespace backend.Entities {
-    public class Car {
+﻿namespace backend.Entities
+{
+    public class Car
+    {
         public Guid Id { get; set; }
         public Guid SellerId { get; set; }
         public string Make { get; set; } = string.Empty;

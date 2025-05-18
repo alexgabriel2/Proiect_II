@@ -2,15 +2,8 @@ import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 
-import { routes } from './app.routes';
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {tokenInterceptor} from './shared/guard/token.interceptor';
+import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),
-    {provide:HTTP_INTERCEPTORS,useClass:tokenInterceptor,multi:true},
-  ]
-
+  providers: [provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes)]
 };
