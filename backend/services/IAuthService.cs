@@ -9,6 +9,9 @@ namespace backend.services {
         Task<List<string>> checkExisting(RegisterDto user);
         Task<UserDTO?> GetUserByIdAsync(string userId);
         Task UpdateUserAsync(UserDTO user,string userID);
+        Task<Favorite?> AddToFavorite(string carId, string userId);
+        Task<List<CarCardDTO>> GetFavorites(string userId);
+        Task<bool> DeleteFavorite(string v, string userId);
         Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username);
     }
 }

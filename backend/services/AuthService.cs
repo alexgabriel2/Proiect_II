@@ -147,7 +147,6 @@ namespace backend.services {
             await context.SaveChangesAsync();
 
         }
-
         public async Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username)
         {
             var user = await context.Users.FirstOrDefaultAsync(x => x.Username == username);
@@ -183,5 +182,54 @@ namespace backend.services {
                 && password.Any(char.IsDigit)
                 && password.Any(specialChars.Contains);
         }
+
+        public Task<Favorite>? AddToFavorite(string carId, string userId) {
+
+            if (string.IsNullOrEmpty(carId) || string.IsNullOrEmpty(userId)) {
+                return null;
+            }
+            
+            var favorite = new Favorite() {
+                CarId = Guid.Parse(carId),
+                UserId = Guid.Parse(userId)
+            };
+            context.Favorites.Add(favorite);
+            context.SaveChanges();
+            return Task.FromResult(favorite);
+
+        }
+
+        public async Task<List<CarCardDTO>> GetFavorites(string userId) {
+            var favorites = context.Favorites.Where(x => x.UserId.ToString() == userId).ToList();
+            if (favorites == null) {
+                throw new Exception("No favorites found");
+            }
+            var carIds = favorites.Select(x => x.CarId).ToList();
+            var cars = context.Cars.Where(x => carIds.Contains(x.Id)).ToList();
+            if (cars == null) {
+                throw new Exception("No cars found");
+            }
+            var carDtos = cars.Select(car => new CarCardDTO {
+                Id = car.Id,
+                Make = car.Make,
+                Model = car.Model,
+                Year = car.Year,
+                Milleage = car.Milleage,
+                Price = car.Price,
+                FuelType = car.FuelType,
+                Status = car.Status,
+            }).ToList();
+            return carDtos;
+        }
+
+        public Task<bool> DeleteFavorite(string v, string userId) {
+            var favorite = context.Favorites.FirstOrDefault(x => x.CarId.ToString() == v && x.UserId.ToString() == userId);
+            if (favorite == null) {
+                throw new Exception("Favorite not found");
+            }
+            context.Favorites.Remove(favorite);
+            context.SaveChanges();
+            return Task.FromResult(true);
+      
     }
 }

@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Entities;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.services {
@@ -13,19 +14,32 @@ namespace backend.services {
         public async Task<List<Car>> GetCarsAsync() {
             return await _context.Cars.ToListAsync();
         }
+
         public async Task<Car?> GetCarByIdAsync(Guid carId) {
             return await _context.Cars.FirstOrDefaultAsync(c => c.Id == carId);
         }
 
 
-        public async Task<Car> CreateCarAsync(Car car, Guid userId) {
-            car.Id = Guid.NewGuid();
-            car.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
-            car.SellerId = userId; 
+        public async Task<Car> CreateCarAsync(CarAddDTO car, Guid userId, byte[]? imageData) {
+            var newCar = new Car {
+                Id = Guid.NewGuid(),
+                SellerId = userId,
+                Make = car.Make,
+                Model = car.Model,
+                Year = car.Year,
+                Milleage = car.Milleage,
+                Price = car.Price,
+                FuelType = car.FuelType,
+                Transmission = car.Transmission,
+                Description = car.Description,
+                Status = car.Status,
+                CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                Image = imageData
+            };
 
-            _context.Cars.Add(car);
+            _context.Cars.Add(newCar);
             await _context.SaveChangesAsync();
-            return car;
+            return newCar;
         }
     }
 }
