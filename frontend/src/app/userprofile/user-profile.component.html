@@ -12,6 +12,10 @@
         <span>{{ profileForm.get('lastName')?.value }}</span>
       </div>
       <div class="info-row">
+        <label>Username:</label>
+        <span>{{ profileForm.get('userName')?.value }}</span>
+      </div>
+      <div class="info-row">
         <label>Email:</label>
         <span>{{ profileForm.get('email')?.value }}</span>
       </div>
@@ -29,22 +33,54 @@
     <form [formGroup]="profileForm" (ngSubmit)="onUpdate()">
       <div class="modal-group">
         <label for="firstName">First Name</label>
-        <input id="firstName" formControlName="firstName" />
+        <input id="firstName" formControlName="firstName"/>
       </div>
       <div class="modal-group">
         <label for="lastName">Last Name</label>
-        <input id="lastName" formControlName="lastName" />
+        <input id="lastName" formControlName="lastName"/>
+      </div>
+      <div class="modal-group">
+        <label for="userName">Username</label>
+        <input id="userName" formControlName="userName"/>
       </div>
       <div class="modal-group">
         <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
+        <input id="email" type="email" formControlName="email"/>
       </div>
 
       <div class="modal-actions">
         <button type="submit" class="save-button">Save</button>
+        <button type="button" class="changePassword-button" (click)="openPasswordModal()">Change Password</button>
         <button type="button" class="cancel-button" (click)="cancelEdit()">Cancel</button>
       </div>
     </form>
   </div>
 </div>
+<!-- Modal pentru schimbare parolă -->
+<div class="modal-backdrop" *ngIf="isPasswordModalOpen">
+  <div class="modal">
+    <h3>Change Password</h3>
+    <form [formGroup]="passwordForm" (ngSubmit)="onPasswordUpdate()">
+      <div class="modal-group">
+        <label for="oldPassword">Old Password</label>
+        <input id="oldPassword" type="password" formControlName="oldPassword"/>
+      </div>
+      <div class="modal-group">
+        <label for="newPassword">New Password</label>
+        <input id="newPassword" type="password" formControlName="newPassword"/>
+      </div>
+      <div class="modal-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword"/>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="save-button">Save</button>
+        <button type="button" class="cancel-button" (click)="closePasswordModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 

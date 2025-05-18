@@ -3,7 +3,7 @@
   justify-content: center;
   padding: 2rem;
   box-sizing: border-box;
-  margin-top: 2rem; /* să nu se lipească de navbar */
+  margin-top: 2rem; /* să nu se lipeasca de navbar */
 }
 
 .profile-card {
@@ -115,6 +115,7 @@
 }
 
 .save-button,
+.changePassword-button,
 .cancel-button {
   padding: 0.5rem 1.2rem;
   font-size: 1rem;
@@ -122,7 +123,13 @@
   border-radius: 6px;
   cursor: pointer;
 }
-
+.changePassword-button {
+  background-color: #4285f4;
+  color: white;
+}
+.changePassword-button:hover {
+  background-color: #2a6cd6;
+}
 .save-button {
   background-color: #4285f4;
   color: white;
@@ -157,5 +164,6 @@
   border-radius: 4px;
   font-size: 1rem;
 }
+
 
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,17 +11,29 @@ import { CommonModule } from '@angular/common';
 })
 export class UserProfileComponent {
   profileForm: FormGroup;
+  passwordForm: FormGroup;
+
   isModalOpen = false;
+  isPasswordModalOpen = false;
+
   backupData: any;
 
   constructor(private fb: FormBuilder) {
     this.profileForm = this.fb.group({
       firstName: ['Amanda'],
       lastName: ['Smith'],
+      userName: ['amanda123'],
       email: ['amanda@example.com']
+    });
+
+    this.passwordForm = this.fb.group({
+      oldPassword: ['Amanda123'],
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
     });
   }
 
+  // Modal pentru profil
   openModal() {
     this.backupData = this.profileForm.value;
     this.isModalOpen = true;
@@ -31,13 +43,36 @@ export class UserProfileComponent {
     this.isModalOpen = false;
   }
 
+  cancelEdit() {
+    this.profileForm.setValue(this.backupData);
+    this.closeModal();
+  }
+
   onUpdate() {
     console.log('Updated Profile:', this.profileForm.value);
     this.closeModal();
   }
 
-  cancelEdit() {
-    this.profileForm.setValue(this.backupData);
-    this.closeModal();
+  // Modal pentru parolă
+  openPasswordModal() {
+    this.passwordForm.reset();
+    this.isPasswordModalOpen = true;
+  }
+
+  closePasswordModal() {
+    this.isPasswordModalOpen = false;
+  }
+
+  onPasswordUpdate() {
+    const { newPassword, confirmPassword } = this.passwordForm.value;
+
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // Aici ai trimite parola către backend
+    console.log('Password updated:', newPassword);
+    this.closePasswordModal();
   }
 }
