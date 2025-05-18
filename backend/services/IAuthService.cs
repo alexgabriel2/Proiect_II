@@ -12,5 +12,6 @@ namespace backend.services {
         Task<Favorite?> AddToFavorite(string carId, string userId);
         Task<List<CarCardDTO>> GetFavorites(string userId);
         Task<bool> DeleteFavorite(string v, string userId);
+        Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username);
     }
 }

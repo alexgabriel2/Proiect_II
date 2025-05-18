@@ -63,4 +63,36 @@ namespace backend.Models {
         public string Email { get; set; } = string.Empty;
        
     }
+
+    public class ChangePasswordDto {
+        public string OldPassword { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
+
+        public List<string> checkValidation()
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(OldPassword))
+            {
+                errors.Add("Old password is required.");
+            }
+
+            if (string.IsNullOrEmpty(NewPassword))
+            {
+                errors.Add("New password is required.");
+            }
+
+            if (NewPassword.Length < 8)
+            {
+                errors.Add("New password must be at least 8 characters long.");
+            }
+
+            if (OldPassword == NewPassword)
+            {
+                errors.Add("New password must be different from the old password.");
+            }
+
+            return errors;
+        }
+    }
 }

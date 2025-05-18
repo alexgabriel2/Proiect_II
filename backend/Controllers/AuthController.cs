@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,12 @@ namespace backend.Controllers {
         public static User user = new User();
 
         [HttpPost("Register")]
-        public async Task<ActionResult<TokenResponseDto>> Register(RegisterDto request) {          
+        public async Task<ActionResult<TokenResponseDto>> Register(RegisterDto request) {
             if (request.checkValidation().Count > 0) {
                 return BadRequest("Please try again");
             }
             var existingUser = await authService.checkExisting(request);
-            if(existingUser.Count > 0) {
+            if (existingUser.Count > 0) {
                 return BadRequest(existingUser);
             }
             var token = await authService.RegisterAsync(request);
@@ -47,6 +48,5 @@ namespace backend.Controllers {
             }
             return Ok(result);
         }
-      
     }
 }
