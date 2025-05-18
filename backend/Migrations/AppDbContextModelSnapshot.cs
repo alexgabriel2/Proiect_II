@@ -40,9 +40,6 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("Make")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -74,21 +71,6 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cars");
-                });
-
-            modelBuilder.Entity("backend.Entities.Favorite", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CarId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UserId", "CarId");
-
-                    b.HasIndex("CarId");
-
-                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("backend.Entities.User", b =>
@@ -130,25 +112,6 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("backend.Entities.Favorite", b =>
-                {
-                    b.HasOne("backend.Entities.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backend.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,70 +3,37 @@ using backend.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-//TODO
-//Add delete and update methods
-namespace backend.Controllers {
+
+namespace backend.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController(ICarService _carService) : Controller {
+    public class CarsController : ControllerBase
+    {
+        private readonly AppDbContext _context;
 
+        public CarsController(AppDbContext context)
+        {
+            _context = context;
+        }
         [HttpGet]
-        public async Task<ActionResult<List<CarCardDTO>>> GetCars() {
-            var cars = await _carService.GetCarsAsync();
-            var carDtos = cars.Select(car => new CarCardDTO {
-                Id = car.Id,
-                Make = car.Make,
-                Model = car.Model,
-                Year = car.Year,
-                Milleage = car.Milleage,
-                Price = car.Price,
-                FuelType = car.FuelType,
-                Status = car.Status,
-                Image = Url.Action(nameof(GetCarImage), new { id = car.Id })
-
-            }).ToList();
-            return Ok(carDtos);
+        public async Task<ActionResult<List<Car>>> GetCars()
+        {
+            var cars = await _context.Cars.ToListAsync();
+            return Ok(cars);
         }
-
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<Car>> GetCarById(Guid id) {
-            var car = await _carService.GetCarByIdAsync(id);
+        [HttpPost]
+        public async Task<ActionResult<List<Car>>> CreateCar([FromBody] Car car)
+        {
             if (car == null)
-                return NotFound();
-            return Ok(car);
-        }
-
-        [Authorize]
-        [HttpPost("AddCar")]
-        public async Task<ActionResult> CreateCar([FromForm] CarAddDTO car) {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-                return Unauthorized("Invalid token");
-            if (car == null)
+            {
                 return BadRequest("Car cannot be null");
-
-            byte[]? imageData = null;
-            if (car.Image != null && car.Image.Length > 0) {
-                using (var ms = new MemoryStream()) {
-                    await car.Image.CopyToAsync(ms);
-                    imageData = ms.ToArray();
-                }
             }
-
-            var createdCar = await _carService.CreateCarAsync(car, Guid.Parse(userId), imageData);
-            return Ok("Car added successfully");
+            car.Id = Guid.NewGuid();
+            car.CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd");
+            _context.Cars.Add(car);                 
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetCars), new { id = car.Id }, car);
         }
-        [HttpGet("{id:guid}/image")]
-        public async Task<IActionResult> GetCarImage(Guid id) {
-            var car = await _carService.GetCarByIdAsync(id);
-            if (car == null || car.Image == null)
-                return NotFound();
-
-            return File(car.Image, "image/jpeg"); // Adjust content type if needed
-        }
-
-
-
     }
 }
