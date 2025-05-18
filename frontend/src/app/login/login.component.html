@@ -3,7 +3,7 @@
 
 
   <form [formGroup]="loginForm" (ngSubmit)="onsubmit()">
-    <input type="email" formControlName="email" name="email" placeholder="Email" required>
+    <input type="text" formControlName="username" name="username" placeholder="username" required>
     <input type="password" formControlName="password" name="password" placeholder="Password" required>
 
     <button type="submit">Login</button>

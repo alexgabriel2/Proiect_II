@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +19,16 @@ namespace backend.Controllers {
         public static User user = new User();
 
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> Register(UserDto request) {
-
-            var user = await authService.RegisterAsync(request);
-            if (user == null) {
-                return BadRequest("User already exists");
+        public async Task<ActionResult<TokenResponseDto>> Register(RegisterDto request) {
+            if (request.checkValidation().Count > 0) {
+                return BadRequest("Please try again");
             }
-
-            return Ok(user);
+            var existingUser = await authService.checkExisting(request);
+            if (existingUser.Count > 0) {
+                return BadRequest(existingUser);
+            }
+            var token = await authService.RegisterAsync(request);
+            return Ok(token);
         }
 
         [HttpPost("Login")]
@@ -40,22 +43,10 @@ namespace backend.Controllers {
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto request) {
             var result = await authService.RefreshTokenAsync(request);
-            if(result is null || result.AccessToken is null || result.RefreshToken is null) {
+            if (result is null || result.AccessToken is null || result.RefreshToken is null) {
                 return Unauthorized("Invalid token");
-            } 
+            }
             return Ok(result);
-        }
-
-        [Authorize]
-        [HttpGet("AuthenticationOnlyEndpoint")]
-        public IActionResult AuthenticationOnlyEndpoint() {
-            return Ok("You are authenticated");
-        }
-
-        [Authorize (Roles ="Admin")]
-        [HttpGet]
-        public IActionResult AdminOnlyEndpoint() {
-            return Ok("You are authenticated");
         }
     }
 }
