@@ -29,7 +29,7 @@ namespace backend.Controllers {
             }
             return Ok(user);
         }
-       
+
         [HttpPut("UpdateInfo")]
         public async Task<ActionResult<UserDTO>> UpdateInfo(UserDTO userDto) {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -46,5 +46,60 @@ namespace backend.Controllers {
             await authService.UpdateUserAsync(user, userId);
             return Ok(user);
         }
+        ///////////////
+        //FAVORITE
+        ///////////////
+        [HttpPost("Favorite/Add")]
+        public async Task<IActionResult> SaveCar(Guid carId) {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) {
+                return Unauthorized("Invalid token");
+            }
+            var user = await authService.GetUserByIdAsync(userId);
+            if (user == null) {
+                return NotFound("User not found");
+            }
+
+            var favorite = await authService.AddToFavorite(carId.ToString(), userId);
+            if (favorite == null) {
+                return BadRequest("Failed to add to favorites");
+            }
+
+            return Ok("Saved");
+        }
+        [HttpGet("Favorite/Get")]
+        public async Task<ActionResult<List<CarCardDTO>>> GetFavorite() {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) {
+                return Unauthorized("Invalid token");
+            }
+            var user = await authService.GetUserByIdAsync(userId);
+            if (user == null) {
+                return NotFound("User not found");
+            }
+            var favorites = await authService.GetFavorites(userId);
+            if (favorites == null) {
+                return BadRequest("Failed to get favorites");
+            }
+            return Ok(favorites);
+        }
+        [HttpDelete("Favorite/Delete")]
+        public async Task<IActionResult> DeleteFavorite(Guid carId) {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) {
+                return Unauthorized("Invalid token");
+            }
+            var user = await authService.GetUserByIdAsync(userId);
+            if (user == null) {
+                return NotFound("User not found");
+            }
+            var result = await authService.DeleteFavorite(carId.ToString(), userId);
+            if (!result) {
+                return BadRequest("Failed to delete favorite");
+            }
+            return Ok("Deleted");
+        }
+
+
     }
 }
