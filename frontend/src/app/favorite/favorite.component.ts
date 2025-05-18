@@ -1,28 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { CarService } from '../shared/services/cars.service';
+import { FavoriteService } from '../shared/services/favorite.service';
 import { CarDto } from '../shared/Models/carDTO';
-import {CurrencyPipe, NgForOf} from '@angular/common';
+import { CarService } from '../shared/services/cars.service';
 
 @Component({
-  selector: 'app-cars',
-  imports: [
-    CurrencyPipe,
-    NgForOf
-  ],
-  templateUrl: './cars.component.html',
+  selector: 'app-favorite',
+  templateUrl: './favorite.component.html',
   standalone: true,
-  styleUrl: './cars.component.css'
+  styleUrls: ['./favorite.component.css']
 })
-export class CarsComponent {
+export class FavoriteComponent implements OnInit {
+  favoriteCars: CarDto[] = [];
 
-  constructor(private carService: CarService) {
-  }
+  constructor(private carService: CarService, private favoriteService: FavoriteService) {}
 
   ngOnInit(): void {
-    this.carService.getAllCars().subscribe({
+    this.favoriteService.getFavorite().subscribe({
       next: (data) => {
-        this.cars = data;
-        this.cars.forEach((car) => {
+        this.favoriteCars = data;
+        this.favoriteCars.forEach((car) => {
           this.carService.getCarImage(car.id).subscribe({
             next: (imageBlob) => {
               const reader = new FileReader();
@@ -38,7 +34,7 @@ export class CarsComponent {
         });
       },
       error: (err) => {
-        console.error('Error fetching cars:', err);
+        console.error('Error fetching favorite cars:', err);
       }
     });
   }
