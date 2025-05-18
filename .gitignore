@@ -1,0 +1,28 @@
+# .NET build
+bin/
+obj/
+*.user
+*.suo
+
+# VS cache
+.vs/
+.idea/
+*.db
+*.db-shm
+*.db-wal
+
+# Rider / JetBrains
+.idea/
+
+# Angular build
+dist/
+node_modules/
+*.log
+
+# System files
+Thumbs.db
+.DS_Store
+
+# Others
+*.vscode/
+*.vsconfig
