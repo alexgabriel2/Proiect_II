@@ -3,16 +3,15 @@ import { CarsComponent } from './cars/cars.component';
 import { AboutComponent } from './about/about.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
-import {FavoriteComponent} from './favorite/favorite.component';
-import {authGuard} from './shared/guard/auth.guard';
+import {UserProfileComponent} from './userprofile/user-profile.component';
+
 
 export const routes: Routes = [
 
   { path: 'cars', component: CarsComponent },
   { path: 'about', component: AboutComponent },
   { path: '',component: RegisterComponent},
-  { path: 'login',component:LoginComponent},
-  { path :'dashboard',component:DashboardComponent,canActivate:[authGuard] },
-  { path :'favorite',component:FavoriteComponent,canActivate:[authGuard] },
+  {path:'login',component:LoginComponent},
+  {path:'user-profile',component:UserProfileComponent},
+
 ];
