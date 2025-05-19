@@ -19,4 +19,11 @@ export class AuthService {
   isLoggedIn() {
     return this.http.get(this.baseURL+'/Auth/Validate');
   }
+  getUserInfo() {
+    return this.http.get(`${this.baseURL}/User/GetInfo`);
+  }
+  updateUserInfo(data: any) {
+    return this.http.put(`${this.baseURL}/User/UpdateProfile`, data);
+  }
+
 }

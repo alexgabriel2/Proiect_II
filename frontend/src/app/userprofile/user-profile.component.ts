@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {AuthService} from '../shared/services/auth.service';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -18,20 +20,34 @@ export class UserProfileComponent {
 
   backupData: any;
 
-  constructor(private fb: FormBuilder) {
+  loadUserInfo() {
+    this.authService.getUserInfo().subscribe({
+      next: (user) => {
+        this.profileForm.patchValue(user);
+      },
+      error: (err) => {
+        console.log('Failed to load user info', err);
+      }
+    });
+  }
+
+
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.profileForm = this.fb.group({
-      firstName: ['Amanda'],
-      lastName: ['Smith'],
-      userName: ['amanda123'],
-      email: ['amanda@example.com']
+      firstName: ['asdnasun'],
+      lastName: [''],
+      userName: [''],
+      email: ['']
     });
 
     this.passwordForm = this.fb.group({
-      oldPassword: ['Amanda123'],
+      oldPassword: [''],
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     });
+    this.loadUserInfo();
   }
+
 
   // Modal pentru profil
   openModal() {
@@ -64,7 +80,7 @@ export class UserProfileComponent {
   }
 
   onPasswordUpdate() {
-    const { newPassword, confirmPassword } = this.passwordForm.value;
+    const {newPassword, confirmPassword} = this.passwordForm.value;
 
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match!");
