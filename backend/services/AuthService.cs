@@ -24,7 +24,7 @@ namespace backend.services {
                     == PasswordVerificationResult.Failed) {
                 return null;
             }
-            
+
             return await CreateTokenResponse(user);
         }
 
@@ -37,7 +37,7 @@ namespace backend.services {
 
         public async Task<TokenResponseDto?> RegisterAsync(RegisterDto request) {
 
-            
+
             var user = new User();
             var hashedPassword = new PasswordHasher<User>()
                  .HashPassword(user, request.Password);
@@ -104,7 +104,7 @@ namespace backend.services {
         }
 
         public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request) {
-            var user=await ValidateRefreshTokenAsync(request.UserId, request.RefreshToken);
+            var user = await ValidateRefreshTokenAsync(request.UserId, request.RefreshToken);
             if (user is null) {
                 return null;
             }
@@ -147,21 +147,17 @@ namespace backend.services {
             await context.SaveChangesAsync();
 
         }
-        public async Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username)
-        {
+        public async Task<bool> ChangePasswordAsync(ChangePasswordDto changePassword, string username) {
             var user = await context.Users.FirstOrDefaultAsync(x => x.Username == username);
-            if (user == null)
-            {
+            if (user == null) {
                 throw new Exception("User not found.");
             }
 
             var passwordVerficationResult = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, changePassword.OldPassword);
-            if (passwordVerficationResult == PasswordVerificationResult.Failed)
-            {
+            if (passwordVerficationResult == PasswordVerificationResult.Failed) {
                 throw new Exception("Old password is incorrect.");
             }
-            if (!IsValidPassword(changePassword.NewPassword))
-            {
+            if (!IsValidPassword(changePassword.NewPassword)) {
                 throw new Exception("New password does not meet the required criteria.");
             }
             var hashedPassword = new PasswordHasher<User>().HashPassword(user, changePassword.NewPassword);
@@ -172,8 +168,7 @@ namespace backend.services {
             return true;
         }
 
-        private bool IsValidPassword(string password)
-        {
+        private bool IsValidPassword(string password) {
             HashSet<char> specialChars = new HashSet<char> { '!', '@', '#', '$', '%', '^', '&', '*' };
             return !string.IsNullOrEmpty(password)
                 && password.Length >= 8
@@ -188,7 +183,7 @@ namespace backend.services {
             if (string.IsNullOrEmpty(carId) || string.IsNullOrEmpty(userId)) {
                 return null;
             }
-            
+
             var favorite = new Favorite() {
                 CarId = Guid.Parse(carId),
                 UserId = Guid.Parse(userId)
@@ -230,6 +225,7 @@ namespace backend.services {
             context.Favorites.Remove(favorite);
             context.SaveChanges();
             return Task.FromResult(true);
-      
+
+        }
     }
 }

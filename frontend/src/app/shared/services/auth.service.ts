@@ -17,6 +17,12 @@ export class AuthService {
     return localStorage.getItem("token");
   }
   isLoggedIn() {
-    return this.http.get(this.baseURL+'/Auth/Validate');
+    return this.http.get(this.baseURL+'/User/Validate');
+  }
+  getUserInfo() {
+    return this.http.get(this.baseURL+'/User/GetInfo');
+  }
+  updateUserInfo(data: any) {
+    return this.http.put(this.baseURL+'/User/UpdateProfile',data);
   }
 }
