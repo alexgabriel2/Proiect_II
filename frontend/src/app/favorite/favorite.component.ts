@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FavoriteService} from '../shared/services/favorite.service';
+import { FavoriteService } from '../shared/services/favorite.service';
 import { CarDto } from '../shared/Models/carDTO';
-import {CarService} from '../shared/services/cars.service';
+import { CarService } from '../shared/services/cars.service';
 
 @Component({
   selector: 'app-favorite',
@@ -12,7 +12,7 @@ import {CarService} from '../shared/services/cars.service';
 export class FavoriteComponent implements OnInit {
   favoriteCars: CarDto[] = [];
 
-  constructor(private carService: CarService,private favoriteService:FavoriteService) {}
+  constructor(private carService: CarService, private favoriteService: FavoriteService) {}
 
   ngOnInit(): void {
     this.favoriteService.getFavorite().subscribe({
@@ -20,8 +20,12 @@ export class FavoriteComponent implements OnInit {
         this.favoriteCars = data;
         this.favoriteCars.forEach((car) => {
           this.carService.getCarImage(car.id).subscribe({
-            next: (imageUrl) => {
-              car.image = imageUrl; // Dynamically add the image property
+            next: (imageBlob) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                car.image = reader.result as string; // Convert Blob to base64 string
+              };
+              reader.readAsDataURL(imageBlob);
             },
             error: (err) => {
               console.error(`Error fetching image for car ID ${car.id}:`, err);
