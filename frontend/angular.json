@@ -24,21 +24,12 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
-              },
-              "src/favicon.ico"
+              }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -94,18 +85,15 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
-            ]
+            "scripts": []
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "cf0eb17b-8d9c-43db-a647-063d077c6a15"
+    "analytics": false
   }
 }

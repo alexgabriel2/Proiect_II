@@ -1,0 +1,18 @@
+<h2 style="color: black;">Lista de masini</h2>
+
+<div class="card-grid">
+  <div
+    *ngFor="let car of cars"
+    class="car-card"
+    [routerLink]="['/cars/car-details', car.id]"
+    style="cursor: pointer;"
+  >
+    <div class="card-img-wrapper">
+      <img [src]="car.image" [alt]="car.make + ' ' + car.model" />
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ car.make }} {{ car.model }}</h5>
+      <p class="card-price">Price: {{ car.price | currency:'EUR' }}</p>
+    </div>
+  </div>
+</div>
