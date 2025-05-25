@@ -7,7 +7,7 @@ import { CarDto } from '../Models/carDTO';
   providedIn: 'root'
 })
 export class CarService {
-  private baseURL = 'https://localhost:7215/api';
+  private readonly baseURL = 'https://localhost:7215/api' ;
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class CarService {
   getCarImage(carId: string): Observable<Blob> {
     return this.http.get(`${this.baseURL}/Cars/${carId}/Image`, { responseType: 'blob' });
   }
-  getCarById(id: number): Observable<CarDto> {
-    return this.http.get<CarDto>(`/api/cars/${id}`);
+  getCarById(id: string): Observable<CarDto> {
+    return this.http.get<CarDto>(`${this.baseURL}/cars/${id}`);
   }
 }
