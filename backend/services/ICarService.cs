@@ -6,6 +6,7 @@ namespace backend.services {
         Task<List<Car>> GetCarsAsync();
         Task<Car> CreateCarAsync(CarAddDTO car, Guid userId, byte[]? imageData);
         Task<Car?> GetCarByIdAsync(Guid carId);
+        Task<bool> DeleteCarAsync(Guid carId);
 
     }
 }

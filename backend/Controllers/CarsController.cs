@@ -69,7 +69,27 @@ namespace backend.Controllers {
             return File(car.Image, "image/jpeg"); // Adjust content type if needed
         }
 
+        [Authorize]
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> DeleteCar(Guid id)
+        {
+            var car = await _carService.GetCarByIdAsync(id);
+            if (car == null)
+                return NotFound("Car not found.");
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return Unauthorized("Invalid token.");
+
+            if (car.SellerId.ToString() != userId)
+                return Forbid("You are not allowed to delete this car!");
+
+            var result = await _carService.DeleteCarAsync(id);
+            if (!result)
+                return BadRequest("Failed to delete the car.");
+
+            return Ok("Car deleted successfully.");
+        }
 
     }
 }
