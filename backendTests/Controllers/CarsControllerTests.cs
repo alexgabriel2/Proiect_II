@@ -27,6 +27,8 @@ namespace backendTests.Controllers
             controller = new CarsController(mockCarService.Object);
         }
 
+        //------------GET CARS TESTS-----------------
+
         [TestMethod] 
         public async Task GetCars_ReturnsOkWithList()
         {
@@ -165,6 +167,8 @@ namespace backendTests.Controllers
             Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
         }
 
+        //------------CREATE CARS TESTS-----------------
+
         [TestMethod]
         public async Task CreateCar_ValidData_ReturnsOk()
         {
@@ -246,6 +250,8 @@ namespace backendTests.Controllers
             Assert.AreEqual("Car cannot be null", badRequestResult.Value);
         }
 
+        //------------GET CAR IMAGE TESTS-----------------
+
         [TestMethod]
         public async Task GetCarImage_ExistingImage_ReturnsFile()
         {
@@ -306,6 +312,134 @@ namespace backendTests.Controllers
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        //------------UPDATE CARS TESTS-----------------
+
+        [TestMethod]
+        public async Task UpdateCar_ReturnsUnauthorized_IfUserIdIsMissing()
+        {
+            // Arrange
+            var carId = Guid.NewGuid();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext() // no user claims
+            };
+
+            // Act
+            var result = await controller.UpdateCar(carId, new CarAddDTO());
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(UnauthorizedObjectResult));
+            var unauthorizedResult = result as UnauthorizedObjectResult;
+            Assert.AreEqual("Invalid token", unauthorizedResult.Value);
+        }
+
+        [TestMethod]
+        public async Task UpdateCar_ReturnsNotFound_IfCarDoesNotExist()
+        {
+            // Arrange
+            var carId = Guid.NewGuid();
+            mockCarService.Setup(s => s.GetCarByIdAsync(carId)).ReturnsAsync((Car?)null);
+
+            var userId = Guid.NewGuid();
+            var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, userId.ToString()) };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(identity) }
+            };
+
+            // Act
+            var result = await controller.UpdateCar(carId, new CarAddDTO());
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.AreEqual("Car not found.", notFoundResult.Value);
+        }
+
+        [TestMethod]
+        public async Task UpdateCar_ReturnsForbid_IfUserIsNotSeller()
+        {
+            // Arrange
+            var carId = Guid.NewGuid();
+            var car = new Car
+            {
+                Id = carId,
+                SellerId = Guid.NewGuid() // different user
+            };
+            mockCarService.Setup(s => s.GetCarByIdAsync(carId)).ReturnsAsync(car);
+
+            var userId = Guid.NewGuid(); // not seller
+            var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, userId.ToString()) };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(identity) }
+            };
+
+            // Act
+            var result = await controller.UpdateCar(carId, new CarAddDTO());
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ForbidResult));
+        }
+
+        [TestMethod]
+        public async Task UpdateCar_ReturnsBadRequest_IfUpdateFails()
+        {
+            // Arrange
+            var carId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
+            var car = new Car { Id = carId, SellerId = userId };
+
+            mockCarService.Setup(s => s.GetCarByIdAsync(carId)).ReturnsAsync(car);
+            mockCarService.Setup(s => s.UpdateCarAsync(carId, It.IsAny<CarAddDTO>(), It.IsAny<byte[]>())).ReturnsAsync(false);
+
+            var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, userId.ToString()) };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(identity) }
+            };
+
+            // Act
+            var result = await controller.UpdateCar(carId, new CarAddDTO());
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.AreEqual("Failed to update car.", badRequestResult.Value);
+        }
+
+        [TestMethod]
+        public async Task UpdateCar_ReturnsOk_WhenSuccessful()
+        {
+            // Arrange
+            var carId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
+            var car = new Car { Id = carId, SellerId = userId };
+
+            mockCarService.Setup(s => s.GetCarByIdAsync(carId)).ReturnsAsync(car);
+            mockCarService.Setup(s => s.UpdateCarAsync(carId, It.IsAny<CarAddDTO>(), It.IsAny<byte[]>())).ReturnsAsync(true);
+
+            var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, userId.ToString()) };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = new ClaimsPrincipal(identity) }
+            };
+
+            // Act
+            var result = await controller.UpdateCar(carId, new CarAddDTO());
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            var okResult = result as OkObjectResult;
+            Assert.AreEqual("Car updated successfully.", okResult.Value);
+        }
+
+
+        //------------DELETE CARS TESTS-----------------
 
         [TestMethod]
         public async Task DeleteCar_ExistingCarAndAuthorizedUser_ReturnsOk()
