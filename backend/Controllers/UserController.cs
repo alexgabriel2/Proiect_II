@@ -55,7 +55,7 @@ namespace backend.Controllers {
             var errorsValidation = changePassword.checkValidation();
             if (errorsValidation.Count > 0)
             {
-                return BadRequest(errorsValidation); // <-- asta trimite o listă de string-uri
+                return BadRequest(errorsValidation); 
             }
 
             var username = User.FindFirstValue(ClaimTypes.Name);
