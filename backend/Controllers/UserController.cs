@@ -9,7 +9,7 @@ namespace backend.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController(IAuthService authService) : Controller {
+    public class UserController(IAuthService authService) : ControllerBase {
         public static User user = new User();
 
         [HttpGet("Validate")]
@@ -17,6 +17,8 @@ namespace backend.Controllers {
             return Ok(true);
         }
 
+
+        
         [HttpGet("GetInfo")]
         public async Task<ActionResult<UserDTO>> GetInfo() {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,22 +45,25 @@ namespace backend.Controllers {
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
             user.Email = userDto.Email;
+            user.Username = userDto.Username;
             await authService.UpdateUserAsync(user, userId);
             return Ok(user);
         }
-         [HttpPut("ChangePassword")]
+        [HttpPut("ChangePassword")]
         public async Task<ActionResult> ChangePassword(ChangePasswordDto changePassword)
         {
             var errorsValidation = changePassword.checkValidation();
             if (errorsValidation.Count > 0)
             {
-                return BadRequest(errorsValidation);
+                return BadRequest(errorsValidation); // <-- asta trimite o listă de string-uri
             }
+
             var username = User.FindFirstValue(ClaimTypes.Name);
             if (string.IsNullOrEmpty(username))
             {
                 return Unauthorized("Invalid token.");
             }
+
             try
             {
                 var result = await authService.ChangePasswordAsync(changePassword, username);
@@ -66,13 +71,14 @@ namespace backend.Controllers {
                 {
                     return BadRequest("Password could not be changed.");
                 }
-                return Ok("Password changed successfully.");
+                return Ok(new { message = "Password changed successfully" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { error = ex.Message });
             }
         }
+
 
         ///////////////
         //FAVORITE

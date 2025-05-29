@@ -166,6 +166,7 @@ namespace backend.services
             existingUser.FirstName = user.FirstName;
             existingUser.LastName = user.LastName;
             existingUser.Email = user.Email;
+            existingUser.Username = user.Username;
             context.Users.Update(existingUser);
             await context.SaveChangesAsync();
 
@@ -183,6 +184,8 @@ namespace backend.services
             {
                 throw new Exception("Old password is incorrect.");
             }
+            Console.WriteLine($"NEW PASSWORD RECEIVED: {changePassword.NewPassword}");
+
             if (!IsValidPassword(changePassword.NewPassword))
             {
                 throw new Exception("New password does not meet the required criteria.");

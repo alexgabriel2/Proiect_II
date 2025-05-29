@@ -23,6 +23,7 @@ export class UserProfileComponent {
   loadUserInfo() {
     this.authService.getUserInfo().subscribe({
       next: (user) => {
+        console.log("USER RECEIVED FROM BACKEND:", user);
         this.profileForm.patchValue(user);
       },
       error: (err) => {
@@ -34,9 +35,9 @@ export class UserProfileComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.profileForm = this.fb.group({
-      firstName: ['asdnasun'],
+      firstName: [''],
       lastName: [''],
-      userName: [''],
+      username: [''],
       email: ['']
     });
 
@@ -65,9 +66,19 @@ export class UserProfileComponent {
   }
 
   onUpdate() {
-    console.log('Updated Profile:', this.profileForm.value);
-    this.closeModal();
+    if (this.profileForm.invalid) return;
+
+    this.authService.updateUserInfo(this.profileForm.value).subscribe({
+      next: (response) => {
+        console.log('User updated successfully:', response);
+        this.closeModal();  // închide modalul
+      },
+      error: (err) => {
+        console.error('Error updating user:', err);
+      }
+    });
   }
+
 
   // Modal pentru parolă
   openPasswordModal() {
@@ -80,15 +91,22 @@ export class UserProfileComponent {
   }
 
   onPasswordUpdate() {
-    const {newPassword, confirmPassword} = this.passwordForm.value;
+    const form = this.passwordForm.value;
 
-    if (newPassword !== confirmPassword) {
-      alert("Passwords do not match!");
+    if (form.newPassword !== form.confirmPassword) {
+      alert("Passwords do not match");
       return;
     }
 
-    // Aici ai trimite parola către backend
-    console.log('Password updated:', newPassword);
-    this.closePasswordModal();
+    this.authService.changePassword(form).subscribe({
+      next: () => {
+        alert('Password updated successfully');
+        this.closePasswordModal();
+      },
+      error: (err) => {
+        console.error('Password update failed', err);
+        alert('Password update failed');
+      }
+    });
   }
 }
