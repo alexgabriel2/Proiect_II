@@ -20,10 +20,18 @@ export class AuthService {
     return this.http.get(this.baseURL+'/Auth/Validate');
   }
   getUserInfo() {
-    return this.http.get(`${this.baseURL}/User/GetInfo`);
+    const token = this.getToken();
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.get(`${this.baseURL}/User/GetInfo`, { headers });
   }
+
   updateUserInfo(data: any) {
-    return this.http.put(`${this.baseURL}/User/UpdateProfile`, data);
+    const token = this.getToken();
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.put(`${this.baseURL}/User/UpdateInfo`, data, { headers });
+  }
+  changePassword(data: any) {
+    return this.http.put(`${this.baseURL}/User/ChangePassword`, data);
   }
 
 }

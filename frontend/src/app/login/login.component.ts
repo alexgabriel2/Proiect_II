@@ -25,7 +25,7 @@ export class LoginComponent {
       next:(response:any)=>{
         localStorage.setItem('token',response.accessToken);
         localStorage.setItem('refreshToken',response.refreshToken);
-        this.router.navigateByUrl('/dashboard');
+        this.router.navigateByUrl('/user-profile');
       },
       error:(err)=>{
         console.error('Login failed:', err);
