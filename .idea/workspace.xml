@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebf57c66-b9cb-4962-b6d4-17bc9dccc6be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controllers/UserController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/services/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/AuthService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/dashboard/dashboard.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/services/user.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/dashboard/dashboard.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/dashboard/dashboard.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/dashboard/dashboard.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/login/login.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/services/auth.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/userprofile/user-profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/userprofile/user-profile.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/userprofile/user-profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/userprofile/user-profile.component.ts" afterDir="false" />
-    </list>
+    <list default="true" id="ebf57c66-b9cb-4962-b6d4-17bc9dccc6be" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -107,7 +94,7 @@
       <workItem from="1748186807446" duration="707000" />
       <workItem from="1748294617897" duration="891000" />
       <workItem from="1748428444030" duration="11359000" />
-      <workItem from="1748523286942" duration="2193000" />
+      <workItem from="1748523286942" duration="2789000" />
     </task>
     <servers />
   </component>
