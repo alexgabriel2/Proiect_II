@@ -70,6 +70,37 @@ namespace backend.Controllers {
         }
 
         [Authorize]
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> UpdateCar(Guid id, [FromForm] CarAddDTO updatedCar)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) 
+                return Unauthorized("Invalid token");
+
+            var existingCar = await _carService.GetCarByIdAsync(id);
+            if (existingCar == null)
+                return NotFound("Car not found.");
+
+            if (existingCar.SellerId.ToString() != userId)
+                return Forbid("You are not allowed to update this car.");
+
+            byte[]? imageData = null;
+            if (updatedCar.Image != null && updatedCar.Image.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await updatedCar.Image.CopyToAsync(ms);
+                imageData = ms.ToArray();
+            }
+
+            var result = await _carService.UpdateCarAsync(id, updatedCar, imageData);
+            if (!result)
+                return BadRequest("Failed to update car.");
+
+            return Ok("Car updated successfully.");
+        }
+
+
+        [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteCar(Guid id)
         {

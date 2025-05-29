@@ -49,6 +49,27 @@ namespace backend.services
             return newCar;
         }
 
+        public async Task<bool> UpdateCarAsync(Guid id, CarAddDTO updatedCar, byte[]? imageData)
+        {
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null)
+                return false;
+
+            car.Make = updatedCar.Make;
+            car.Model = updatedCar.Model;
+            car.Year = updatedCar.Year;
+            car.Milleage = updatedCar.Milleage;
+            car.Price = updatedCar.Price;
+            car.FuelType = updatedCar.FuelType;
+            car.Status = updatedCar.Status;
+
+            if (imageData != null)
+                car.Image = imageData;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> DeleteCarAsync(Guid carId)
         {
             var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == carId);
