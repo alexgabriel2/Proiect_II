@@ -4,7 +4,7 @@ export interface CarDto {
   make: string;
   model: string;
   year: number;
-  milleage: number;
+  mileage: number;
   price: number;
   fuelType: string;
   transmission: string;

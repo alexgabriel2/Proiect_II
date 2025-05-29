@@ -1,1 +1,7 @@
-<app-cards [cars]="cars"></app-cards>
+<h2 style="color: black;">Lista de masini</h2>
+
+<div *ngFor="let car of cars" class="car-item">
+  <img [src]="car.image" alt="{{ car.make }} {{ car.model }}">
+  <h3>{{ car.make }} {{ car.model }}</h3>
+  <p>Price: {{ car.price | currency:'EUR' }}</p>
+</div>

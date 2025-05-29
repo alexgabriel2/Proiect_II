@@ -69,58 +69,7 @@ namespace backend.Controllers {
             return File(car.Image, "image/jpeg"); // Adjust content type if needed
         }
 
-        [Authorize]
-        [HttpPut("{id:guid}")]
-        public async Task<ActionResult> UpdateCar(Guid id, [FromForm] CarAddDTO updatedCar)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null) 
-                return Unauthorized("Invalid token");
 
-            var existingCar = await _carService.GetCarByIdAsync(id);
-            if (existingCar == null)
-                return NotFound("Car not found.");
-
-            if (existingCar.SellerId.ToString() != userId)
-                return Forbid("You are not allowed to update this car.");
-
-            byte[]? imageData = null;
-            if (updatedCar.Image != null && updatedCar.Image.Length > 0)
-            {
-                using var ms = new MemoryStream();
-                await updatedCar.Image.CopyToAsync(ms);
-                imageData = ms.ToArray();
-            }
-
-            var result = await _carService.UpdateCarAsync(id, updatedCar, imageData);
-            if (!result)
-                return BadRequest("Failed to update car.");
-
-            return Ok("Car updated successfully.");
-        }
-
-
-        [Authorize]
-        [HttpDelete("{id:guid}")]
-        public async Task<ActionResult> DeleteCar(Guid id)
-        {
-            var car = await _carService.GetCarByIdAsync(id);
-            if (car == null)
-                return NotFound("Car not found.");
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-                return Unauthorized("Invalid token.");
-
-            if (car.SellerId.ToString() != userId)
-                return Forbid("You are not allowed to delete this car!");
-
-            var result = await _carService.DeleteCarAsync(id);
-            if (!result)
-                return BadRequest("Failed to delete the car.");
-
-            return Ok("Car deleted successfully.");
-        }
 
     }
 }
