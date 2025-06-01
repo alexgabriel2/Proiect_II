@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../shared/services/auth.service';
+import {FavoriteComponent} from '../favorite/favorite.component';
 
 
 @Component({
@@ -9,7 +10,7 @@ import {AuthService} from '../shared/services/auth.service';
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule,FavoriteComponent]
 })
 export class UserProfileComponent {
   profileForm: FormGroup;

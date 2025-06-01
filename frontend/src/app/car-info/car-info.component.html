@@ -25,11 +25,14 @@
       </div>
 
       <div class="car-meta">
-        <p><strong>Proprietar ID:</strong> {{ carDetails.sellerId }}</p>
-        <p><strong>Adăugat la:</strong> {{ carDetails.createdAt | date:'dd MMM yyyy' }}</p>
+
+        <p><strong>Postat:</strong> {{ carDetails.createdAt | date:'dd MMM yyyy' }}</p>
       </div>
 
-      <button class="cta-button">Contactează Vânzătorul</button>
+      <div class="button-container">
+        <button class="cta-button" (click)="displaySellerId()">Show Seller ID</button>
+        <button class="cta-button" (click)="addToFavorites()">Add to Favorites</button>
+      </div>
     </div>
   </div>
 </div>

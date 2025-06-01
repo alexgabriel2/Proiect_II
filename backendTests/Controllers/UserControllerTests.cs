@@ -49,10 +49,18 @@ namespace backendTests.Controllers
             // Act
             var result = await controller.ChangePassword(changePasswordDto);
 
-            // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
             var okResult = result as OkObjectResult;
-            Assert.AreEqual("Password changed successfully.", okResult.Value);
+            var dict = okResult?.Value as IDictionary<string, object>;
+            if (dict != null) {
+                Assert.AreEqual("Password changed successfully.", dict["message"]);
+            } else {
+                // fallback for anonymous type (reflection)
+                var messageProp = okResult?.Value?.GetType().GetProperty("message");
+                Assert.IsNotNull(messageProp, "message property not found");
+                var messageValue = messageProp.GetValue(okResult.Value);
+                Assert.AreEqual("Password changed successfully.", messageValue);
+            }
         }
 
         [TestMethod]

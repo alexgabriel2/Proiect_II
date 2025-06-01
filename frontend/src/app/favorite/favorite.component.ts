@@ -1,41 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { FavoriteService } from '../shared/services/favorite.service';
 import { CarDto } from '../shared/Models/carDTO';
-import { CarService } from '../shared/services/cars.service';
+import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-favorite',
   templateUrl: './favorite.component.html',
   standalone: true,
+  imports: [
+    NgForOf,
+    NgIf
+  ],
   styleUrls: ['./favorite.component.css']
 })
 export class FavoriteComponent implements OnInit {
   favoriteCars: CarDto[] = [];
 
-  constructor(private carService: CarService, private favoriteService: FavoriteService) {}
+  constructor(private favoriteService: FavoriteService) {}
 
   ngOnInit(): void {
+    this.loadFavorites();
+  }
+
+  loadFavorites(): void {
     this.favoriteService.getFavorite().subscribe({
-      next: (data) => {
-        this.favoriteCars = data;
-        this.favoriteCars.forEach((car) => {
-          this.carService.getCarImage(car.id).subscribe({
-            next: (imageBlob) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                car.image = reader.result as string; // Convert Blob to base64 string
-              };
-              reader.readAsDataURL(imageBlob);
-            },
-            error: (err) => {
-              console.error(`Error fetching image for car ID ${car.id}:`, err);
-            }
-          });
-        });
+      next: (cars) => {
+        this.favoriteCars = cars;
       },
-      error: (err) => {
-        console.error('Error fetching favorite cars:', err);
-      }
+      error: (err) => console.error('Error fetching favorite cars:', err)
     });
   }
 }

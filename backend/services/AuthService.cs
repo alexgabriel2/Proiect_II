@@ -152,7 +152,8 @@ namespace backend.services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.Username,
-                Email = user.Email
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
             };
         }
 

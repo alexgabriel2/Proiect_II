@@ -1,4 +1,5 @@
 ﻿using backend.Entities;
+using backend.Migrations;
 using backend.Models;
 using backend.services;
 using Microsoft.AspNetCore.Authorization;
@@ -17,8 +18,20 @@ namespace backend.Controllers {
             return Ok(true);
         }
 
+        [HttpGet("UserContact")]
+        public async Task<ActionResult<string>> GetUserContact(string userId) {
+           
+            if (userId == null) {
+                return Unauthorized("Invalid token");
+            }
+            var user = await authService.GetUserByIdAsync(userId);
+            if (user == null) {
+                return NotFound("User not found");
+            }
+           
+            return Ok(user.PhoneNumber);
+        }
 
-        
         [HttpGet("GetInfo")]
         public async Task<ActionResult<UserDTO>> GetInfo() {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -71,7 +84,7 @@ namespace backend.Controllers {
                 {
                     return BadRequest("Password could not be changed.");
                 }
-                return Ok(new { message = "Password changed successfully" });
+                return Ok(new { message = "Password changed successfully." });
             }
             catch (Exception ex)
             {
@@ -84,7 +97,7 @@ namespace backend.Controllers {
         //FAVORITE
         ///////////////
         [HttpPost("Favorite/Add")]
-        public async Task<IActionResult> SaveCar(Guid carId) {
+        public async Task<IActionResult> SaveCar([FromBody] AddFavoriteDto dto) {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) {
                 return Unauthorized("Invalid token");
@@ -94,13 +107,14 @@ namespace backend.Controllers {
                 return NotFound("User not found");
             }
 
-            var favorite = await authService.AddToFavorite(carId.ToString(), userId);
+            var favorite = await authService.AddToFavorite(dto.CarId, userId);
             if (favorite == null) {
                 return BadRequest("Failed to add to favorites");
             }
 
             return Ok("Saved");
         }
+
         [HttpGet("Favorite/Get")]
         public async Task<ActionResult<List<CarCardDTO>>> GetFavorite() {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -118,7 +132,7 @@ namespace backend.Controllers {
             return Ok(favorites);
         }
         [HttpDelete("Favorite/Delete")]
-        public async Task<IActionResult> DeleteFavorite(Guid carId) {
+        public async Task<IActionResult> DeleteFavorite(string carId) {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) {
                 return Unauthorized("Invalid token");
@@ -127,7 +141,7 @@ namespace backend.Controllers {
             if (user == null) {
                 return NotFound("User not found");
             }
-            var result = await authService.DeleteFavorite(carId.ToString(), userId);
+            var result = await authService.DeleteFavorite(carId, userId);
             if (!result) {
                 return BadRequest("Failed to delete favorite");
             }

@@ -1,1 +1,13 @@
-<p>favorite works!</p>
+<div *ngIf="favoriteCars.length > 0; else noFavorites">
+  <h3>Your Favorite Cars</h3>
+  <ul>
+    <li *ngFor="let car of favoriteCars">
+      <h4>{{ car.make }}</h4>
+      <p>Model: {{ car.model }}</p>
+      <p>Price: {{ car.price }}</p>
+    </li>
+  </ul>
+</div>
+<ng-template #noFavorites>
+  <p>You have no favorite cars yet.</p>
+</ng-template>

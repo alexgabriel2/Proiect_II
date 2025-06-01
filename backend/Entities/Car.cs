@@ -14,6 +14,5 @@
         public string CreatedAt { get; set; } = string.Empty;
         public byte[]? Image { get; set; }
 
-
     }
 }

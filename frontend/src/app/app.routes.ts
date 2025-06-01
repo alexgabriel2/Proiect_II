@@ -6,6 +6,7 @@ import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {authGuard} from './shared/guard/auth.guard';
 import {CarInfoComponent} from './car-info/car-info.component';
+import {UserProfileComponent} from './userprofile/user-profile.component';
 
 export const routes: Routes = [
 
@@ -17,5 +18,7 @@ export const routes: Routes = [
   {
     path: 'cars/car-info/:id',
     loadComponent: () => import('./car-info/car-info.component').then(m => m.CarInfoComponent)
-  }
+  },
+  {path:'user-profile',component:UserProfileComponent, canActivate:[authGuard]},
+  {path:'favorite', loadComponent: () => import('./favorite/favorite.component').then(m => m.FavoriteComponent)}
 ];

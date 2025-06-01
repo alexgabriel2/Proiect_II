@@ -7,11 +7,14 @@ import { CarDto } from '../Models/carDTO';
   providedIn: 'root'
 })
 export class FavoriteService {
-  private baseURL = 'https://localhost:7215/api/User';
+  private baseURL = 'https://localhost:7215/api/User/Favorite';
 
   constructor(private http: HttpClient) {}
 
   getFavorite(): Observable<CarDto[]> {
     return this.http.get<CarDto[]>(`${this.baseURL}/Get`);
+  }
+  addToFavorite(carId: string): Observable<any> {
+    return this.http.post(`${this.baseURL}/Add`, { carId });
   }
 }

@@ -20,6 +20,9 @@ namespace backend.Controllers {
 
         [HttpPost("Register")]
         public async Task<ActionResult<TokenResponseDto>> Register(RegisterDto request) {
+            if (request == null) {
+                return BadRequest("Please try again");
+            }
             if (request.checkValidation().Count > 0) {
                 return BadRequest("Please try again");
             }
@@ -33,20 +36,30 @@ namespace backend.Controllers {
 
         [HttpPost("Login")]
         public async Task<ActionResult<TokenResponseDto>> Login(LoginDto request) {
-            var response = await authService.LoginAsync(request);
-            if (response == null) {
-                return BadRequest("Invalid credentials");
+            try {
+                var response = await authService.LoginAsync(request);
+                if (response == null) {
+                    return BadRequest("Invalid credentials");
+                }
+                return Ok(response);
             }
-            return Ok(response);
+            catch (Exception ex) {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto request) {
-            var result = await authService.RefreshTokenAsync(request);
-            if (result is null || result.AccessToken is null || result.RefreshToken is null) {
-                return Unauthorized("Invalid token");
+            try {
+                var result = await authService.RefreshTokenAsync(request);
+                if (result is null || result.AccessToken is null || result.RefreshToken is null) {
+                    return Unauthorized("Invalid token");
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex) {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

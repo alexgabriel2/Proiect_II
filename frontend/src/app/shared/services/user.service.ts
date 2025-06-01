@@ -6,14 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://localhost:7215/api/User/GetInfo';
+  private baseUrl = 'https://localhost:7215/api/';
 
   constructor(private http: HttpClient) {}
 
-  getUserInfo(): Observable<any> {
-    const token = localStorage.getItem('token'); // presupunem că l-ai salvat la login
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get(this.apiUrl, { headers });
+  getUserContactInfo(userId: string): Observable<string> {
+    return this.http.get(`${this.baseUrl}User/UserContact?userId=${userId}`, { responseType: 'text' });
   }
 }
