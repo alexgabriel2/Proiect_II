@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
+import {RefreshTokenResponse} from '../Models/RefreshTokenResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -20,34 +21,38 @@ export class AuthService {
   setToken(token: string) {
     localStorage.setItem("token", token);
   }
+  getRefreshToken() {
+    return localStorage.getItem("refreshToken");
+  }
+  setRefreshToken(refreshToken: string) {
+    localStorage.setItem("refreshToken", refreshToken);
+  }
   isLoggedIn() {
     return this.http.get(this.baseURL+'/User/Validate');
   }
   getUserInfo() {
     const token = this.getToken();
-    const headers = { Authorization: `Bearer ${token}` };
-    return this.http.get(`${this.baseURL}/User/GetInfo`, { headers });
+    return this.http.get(`${this.baseURL}/User/GetInfo`);
   }
 
   updateUserInfo(data: any) {
     const token = this.getToken();
-    const headers = { Authorization: `Bearer ${token}` };
-    return this.http.put(`${this.baseURL}/User/UpdateInfo`, data, { headers });
+    return this.http.put(`${this.baseURL}/User/UpdateInfo`, data);
   }
   changePassword(data: any) {
     return this.http.put(`${this.baseURL}/User/ChangePassword`, data);
   }
 
-  refreshToken(): Observable<{ newToken: string }> {
+  refreshToken(): Observable<RefreshTokenResponse> {
     const refreshToken = localStorage.getItem('refreshToken');
-    const userId = this.getUserIdFromToken(this.getToken() || '');
+    const userId = localStorage.getItem('userId');
 
     if (!refreshToken || !userId) {
       throw new Error('Missing refresh token or user ID');
     }
 
     const payload = { userId, refreshToken };
-    return this.http.post<{ newToken: string }>(`${this.baseURL}/Auth/RefreshToken`, payload);
+    return this.http.post<RefreshTokenResponse>(`${this.baseURL}/Auth/RefreshToken`, payload)
   }
 
   private getUserIdFromToken(token: string): string | null {

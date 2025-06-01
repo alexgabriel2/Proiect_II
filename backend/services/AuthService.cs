@@ -116,15 +116,31 @@ namespace backend.services
             return user;
         }
 
-        public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request)
-        {
-            var user = await ValidateRefreshTokenAsync(request.UserId, request.RefreshToken);
-            if (user is null)
-            {
+        public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request) {
+            var user = await context.Users.FindAsync(request.UserId);
+            if (user == null ||
+                user.RefreshToken != request.RefreshToken ||
+                user.RefreshTokenExpiryTime == null ||
+                user.RefreshTokenExpiryTime <= DateTime.UtcNow) {
                 return null;
             }
-            return await CreateTokenResponse(user);
+
+            // Rotate refresh token
+            var newRefreshToken = GenerateRefreshToken();
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+
+            // Issue new access token
+            var accessToken = CreateToken(user);
+
+            return new TokenResponseDto {
+                AccessToken = accessToken,
+                RefreshToken = newRefreshToken
+            };
         }
+
         public async Task<List<string>> checkExisting(RegisterDto user)
         {
             var errors = new List<string>();
