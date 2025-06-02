@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FavoriteService } from '../shared/services/favorite.service';
 import { CarDto } from '../shared/Models/carDTO';
 import {NgForOf, NgIf} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-favorite',
@@ -9,7 +10,8 @@ import {NgForOf, NgIf} from '@angular/common';
   standalone: true,
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   styleUrls: ['./favorite.component.css']
 })
@@ -30,4 +32,16 @@ export class FavoriteComponent implements OnInit {
       error: (err) => console.error('Error fetching favorite cars:', err)
     });
   }
+  removeFromFavorite(carId: string): void {
+    this.favoriteService.removeFromFavorite(carId).subscribe({
+      next: () => {
+        this.favoriteCars = this.favoriteCars.filter(car => `${car.id}` !== `${carId}`);
+      },
+      error: (err) => {
+        console.error('Error removing car from favorites:', err);
+        alert('Eroare la ștergere. Vezi consola.');
+      }
+    });
+  }
+
 }

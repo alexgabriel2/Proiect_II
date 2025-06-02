@@ -5,15 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ebf57c66-b9cb-4962-b6d4-17bc9dccc6be" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/login/login.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/login/login.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Controllers/CarsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controllers/CarsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/cards/cards.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/cards/cards.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/cards/cards.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/cards/cards.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/cards/cards.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/cards/cards.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/cars/cars.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/cars/cars.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/favorite/favorite.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/register/register.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/register/register.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/services/cars.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/services/cars.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/services/favorite.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/services/favorite.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/userprofile/user-profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/userprofile/user-profile.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,25 +53,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JavaScript Debug.navbar.component.html.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Facultate/GitHub-Repos/Proiect/Proiect_II&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Facultate\\GitHub-Repos\\Proiect\\Proiect_II\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.cards.component.html.executor": "Run",
+    "JavaScript Debug.navbar.component.html.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Facultate/GitHub-Repos/Proiect/Proiect_II",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Facultate\\GitHub-Repos\\Proiect\\Proiect_II\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Facultate\GitHub-Repos\Proiect\Proiect_II\frontend\src\app\dashboard" />
@@ -113,6 +119,9 @@
       <workItem from="1748543393211" duration="121000" />
       <workItem from="1748543586079" duration="27000" />
       <workItem from="1748558141219" duration="3520000" />
+      <workItem from="1748801031104" duration="5234000" />
+      <workItem from="1748807024119" duration="267000" />
+      <workItem from="1748807315271" duration="14832000" />
     </task>
     <servers />
   </component>

@@ -62,6 +62,7 @@ namespace backend.Controllers {
         }
         [HttpGet("{id:guid}/image")]
         public async Task<IActionResult> GetCarImage(Guid id) {
+            Console.WriteLine("Received request for image of car ID: " + id);
             var car = await _carService.GetCarByIdAsync(id);
             if (car == null || car.Image == null)
                 return NotFound();

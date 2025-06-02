@@ -1,4 +1,12 @@
-<h2 style="color: black;">Lista de masini</h2>
+
+
+<div class="section-header">
+  <h2><i class="fas fa-flag-checkered"></i> Car List</h2>
+  <button class="add-button" (click)="openModal()">+ Add New Car</button>
+</div>
+
+
+
 
 <div class="card-grid">
   <div
@@ -9,6 +17,7 @@
   >
     <div class="card-img-wrapper">
       <img [src]="car.image" [alt]="car.make + ' ' + car.model" />
+
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ car.make }} {{ car.model }}</h5>
@@ -16,3 +25,48 @@
     </div>
   </div>
 </div>
+<div class="modal-overlay" *ngIf="isModalOpen">
+  <div class="modal">
+    <h3>Add new car</h3>
+
+    <form (ngSubmit)="submitCar()" #carForm="ngForm">
+      <input type="text" name="make" [(ngModel)]="newCar.make" placeholder="Make" required />
+      <input type="text" name="model" [(ngModel)]="newCar.model" placeholder="Model" required />
+      <input type="number" name="year" [(ngModel)]="newCar.year" placeholder="Year" required />
+      <input type="number" name="mileage" [(ngModel)]="newCar.mileage" placeholder="Mileage (km)" required />
+      <input type="number" name="price" [(ngModel)]="newCar.price" placeholder="Price (€)" required />
+
+      <select name="fuelType" [(ngModel)]="newCar.fuelType" required>
+        <option value="" disabled selected>Fuel Type</option>
+        <option value="Petrol">Petrol</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Electric">Electric</option>
+        <option value="Hybrid">Hybrid</option>
+      </select>
+
+      <select name="transmission" [(ngModel)]="newCar.transmission" required>
+        <option value="" disabled selected>Transmission</option>
+        <option value="Manual">Manual</option>
+        <option value="Automatic">Automatic</option>
+      </select>
+
+      <select name="status" [(ngModel)]="newCar.status" required>
+        <option value="" disabled selected>Status</option>
+        <option value="Available">Available</option>
+        <option value="Sold">Sold</option>
+      </select>
+
+      <textarea name="description" [(ngModel)]="newCar.description" placeholder="Description" rows="3"></textarea>
+
+
+      <input type="file" (change)="onImageSelected($event)" />
+
+      <div class="modal-buttons">
+        <button type="submit">Save</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+

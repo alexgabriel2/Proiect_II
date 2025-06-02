@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../shared/services/auth.service';
 import {FavoriteComponent} from '../favorite/favorite.component';
+import { FavoriteService } from '../shared/services/favorite.service';
+import {CarDto} from '../shared/Models/carDTO';
 
 
 @Component({
@@ -15,7 +17,7 @@ import {FavoriteComponent} from '../favorite/favorite.component';
 export class UserProfileComponent {
   profileForm: FormGroup;
   passwordForm: FormGroup;
-
+  favoriteCars: CarDto[] = [];
   isModalOpen = false;
   isPasswordModalOpen = false;
 
@@ -34,7 +36,7 @@ export class UserProfileComponent {
   }
 
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService,private favoriteService: FavoriteService) {
     this.profileForm = this.fb.group({
       firstName: [''],
       lastName: [''],
@@ -110,4 +112,17 @@ export class UserProfileComponent {
       }
     });
   }
+
+  removeFromFavorites(carId: string): void {
+    this.favoriteService.removeFromFavorite(carId).subscribe({
+      next: () => {
+        this.favoriteCars = this.favoriteCars.filter(car => car.id !== carId);
+        alert('Car removed from favorites.');
+      },
+      error: (err) => {
+        console.error('Error removing car from favorites:', err);
+      }
+    });
+  }
+
 }

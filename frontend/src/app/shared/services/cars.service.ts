@@ -20,4 +20,9 @@ export class CarService {
   getCarById(id: string): Observable<CarDto> {
     return this.http.get<CarDto>(`${this.baseURL}/cars/${id}`);
   }
+  addCar(formData: FormData): Observable<any> {
+    return this.http.post(`${this.baseURL}/Cars/AddCar`, formData);
+  }
+
+
 }

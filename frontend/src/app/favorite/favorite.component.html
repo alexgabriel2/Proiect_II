@@ -5,6 +5,13 @@
       <h4>{{ car.make }}</h4>
       <p>Model: {{ car.model }}</p>
       <p>Price: {{ car.price }}</p>
+      <button [routerLink]="['/cars/car-info', car.id]" class="favorite-button">View Details</button>
+      <button
+        class="delete-button"
+        (click)="removeFromFavorite(car.id)"
+      >
+        Remove
+      </button>
     </li>
   </ul>
 </div>
